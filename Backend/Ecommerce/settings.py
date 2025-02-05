@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     'django_rest_passwordreset',
     'users',
     "products",
-    "cart"
+    "cart",
+    "reviews"
     
 ]
 
@@ -42,7 +43,17 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',  
+        'rest_framework.throttling.UserRateThrottle',  
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/minute',  
+        'user': '10/minute',  
+    }
 
 }
 
@@ -148,3 +159,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "moncefzabat37@gmail.com"
 EMAIL_HOST_PASSWORD = "nqqb uqfq zwgu royi"  
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+

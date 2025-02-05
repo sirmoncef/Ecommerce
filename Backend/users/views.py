@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model, authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import RegisterSerializer, LoginSerializer
 from django_rest_passwordreset.models import ResetPasswordToken
+from rest_framework.throttling import AnonRateThrottle
 
 
 
@@ -24,6 +25,8 @@ class RegisterView(APIView):
 class LoginView(APIView):
    
     permission_classes = [permissions.AllowAny]
+    throttle_classes = [AnonRateThrottle]
+    
 
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
