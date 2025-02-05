@@ -1,2 +1,2 @@
 # Ecommerce
-Full Ecommerce App building 
+Full Ecommerce App building in DRF and Next JS
