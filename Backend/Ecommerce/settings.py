@@ -34,7 +34,10 @@ INSTALLED_APPS = [
     'users',
     "products",
     "cart",
-    "reviews"
+    "orders",
+    "reviews",
+    "payment",
+
     
 ]
 
@@ -51,7 +54,7 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle',  
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '5/minute',  
+        'anon': '20/minute',  
         'user': '10/minute',  
     }
 
@@ -160,5 +163,12 @@ EMAIL_HOST_USER = "moncefzabat37@gmail.com"
 EMAIL_HOST_PASSWORD = "nqqb uqfq zwgu royi"  
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+
+
+
+CHARGILY_API_KEY = "your_api_key_here"
+CHARGILY_SECRET = "your_secret_here"
+CHARGILY_BACK_URL = "https://yourwebsite.com/payment/callback/"  
+CHARGILY_WEBHOOK_URL = "https://yourwebsite.com/api/payment/webhook/"  
 
 

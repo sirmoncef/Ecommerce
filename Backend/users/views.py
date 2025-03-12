@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import RegisterSerializer, LoginSerializer
 from django_rest_passwordreset.models import ResetPasswordToken
 from rest_framework.throttling import AnonRateThrottle
+from django.contrib.auth import get_user_model 
 
 
 
@@ -57,6 +58,7 @@ class LogoutView(APIView):
             token = RefreshToken(refresh_toke)
             token.blacklist()
 
+
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -76,20 +78,23 @@ class VerifyOTPAndResetPasswordView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        try:
-            reset_token = ResetPasswordToken.objects.get(user__email=email, key=otp_code)
-        except ResetPasswordToken.DoesNotExist:
+       
+        
+
+        # Check if OTP is valid
+        reset_token = ResetPasswordToken.objects.filter(user__email=email, key=otp_code).first()
+        if not reset_token:
             return Response(
                 {"error": "OTP invalide ou email incorrect."}, 
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Récupérer l'utilisateur
+        # Reset the password
         user = reset_token.user
         user.set_password(new_password)
         user.save()
 
-        
+        # Delete the used OTP token
         reset_token.delete()
 
         return Response(
