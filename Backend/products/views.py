@@ -2,9 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 from .models import *
 from .serializers import *
-
 
 
 class CategoryAPIView(APIView):
@@ -38,7 +38,6 @@ class CategoryAPIView(APIView):
         return Response({"message": "Category deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 
-
 class BrandAPIView(APIView):
     def get(self, request, pk=None):
         if pk:
@@ -70,15 +69,34 @@ class BrandAPIView(APIView):
         return Response({"message": "Brand deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 
-
 class ProductAPIView(APIView):
     def get(self, request, pk=None):
         if pk:
             product = get_object_or_404(Product, pk=pk)
             serializer = ProductSerializer(product)
-        else:
-            products = Product.objects.all()
-            serializer = ProductSerializer(products, many=True)
+            return Response(serializer.data)
+        
+      
+        category_name = request.GET.get('category', None)
+        brand_name = request.GET.get('brand', None)
+        product_name = request.GET.get('name', None)
+        
+        
+        filters = Q()
+        
+       
+        if category_name:
+            filters &= Q(category__name__icontains=category_name)
+        if brand_name:
+            filters &= Q(brand__name__icontains=brand_name)
+        if product_name:
+            filters &= Q(name__icontains=product_name)
+        
+        
+        products = Product.objects.filter(filters)
+        
+      
+        serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
 
     def post(self, request):
@@ -103,7 +121,6 @@ class ProductAPIView(APIView):
 
 
 class AttributeAPIView(APIView):
-
     def get(self, request, pk=None):
         if pk:
             attribute = get_object_or_404(Attribute, pk=pk)
@@ -132,7 +149,6 @@ class AttributeAPIView(APIView):
         attribute = get_object_or_404(Attribute, pk=pk)
         attribute.delete()
         return Response({"message": "Attribute deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
-
 
 
 class ProductDetailAPIView(APIView):
@@ -164,7 +180,6 @@ class ProductDetailAPIView(APIView):
         product_detail = get_object_or_404(ProductDetail, pk=pk)
         product_detail.delete()
         return Response({"message": "Product detail deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
-
 
 
 class AvailableProductDetailAPIView(APIView):

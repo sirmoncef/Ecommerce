@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     "cart",
     "orders",
     "reviews",
-    "payment",
+   
 
     
 ]
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        
     ),
     
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
@@ -166,9 +167,8 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 
-CHARGILY_API_KEY = "your_api_key_here"
-CHARGILY_SECRET = "your_secret_here"
-CHARGILY_BACK_URL = "https://yourwebsite.com/payment/callback/"  
-CHARGILY_WEBHOOK_URL = "https://yourwebsite.com/api/payment/webhook/"  
+CHARGILY_KEY = "test_pk_MpbjkiYF8W7fHpRNWcMouCGivanXwpkJ3rXaTtQG"
+CHARGILY_SECRET = "test_sk_KyA10KdlGw3GezcYwe63PFLFpHzQBPqElEatF41k"
+CHARGILY_URL = "https://pay.chargily.net/test/api/v2/"
 
 
