@@ -118,21 +118,4 @@ class OrderListAPIView(APIView):
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
 
-class UpdateOrderStatusAPIView(APIView):
-    """Update order status (Admin only)"""
-    permission_classes = [IsAdminUser]
 
-    def patch(self, request, order_id):
-        try:
-            order = Order.objects.get(id=order_id)
-            new_status = request.data.get("status")
-
-            if new_status not in dict(Order.STATUS_CHOICES):
-                return Response({"error": "Invalid status"}, status=status.HTTP_400_BAD_REQUEST)
-
-            order.status = new_status
-            order.save()
-
-            return Response({"message": "Order status updated successfully"})
-        except Order.DoesNotExist:
-            return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)

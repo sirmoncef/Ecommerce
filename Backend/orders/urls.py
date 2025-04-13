@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PlaceOrderAPIView, SelectPaymentMethodAPIView, OrderListAPIView, UpdateOrderStatusAPIView
+from .views import PlaceOrderAPIView, SelectPaymentMethodAPIView, OrderListAPIView
 
 urlpatterns = [
     # Order-related endpoints
@@ -7,6 +7,5 @@ urlpatterns = [
     path('order/select-payment/', SelectPaymentMethodAPIView.as_view(), name='select_payment_method'),
     path('order/list/', OrderListAPIView.as_view(), name='order_list'),
     
-    # Admin-related endpoints (for updating order status)
-    path('order/update-status/<int:order_id>/', UpdateOrderStatusAPIView.as_view(), name='update_order_status'),
+   
 ]
