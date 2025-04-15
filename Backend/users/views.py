@@ -3,19 +3,31 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import RegisterSerializer, LoginSerializer,LogoutSerializer,VerifyOTPAndResetPasswordSerializer
 from django_rest_passwordreset.models import ResetPasswordToken
 from rest_framework.throttling import AnonRateThrottle
 from django.contrib.auth import get_user_model 
+from drf_yasg.utils import swagger_auto_schema
+
 
 
 
 User = get_user_model()
 
 class RegisterView(APIView):
+
     permission_classes = [permissions.AllowAny]
 
+    @swagger_auto_schema(
+        request_body=RegisterSerializer,
+        operation_description="Register a new user"
+    )
+
+    
+    
+
     def post(self, request):
+        
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
@@ -28,8 +40,13 @@ class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
     throttle_classes = [AnonRateThrottle]
     
+    @swagger_auto_schema(
+        request_body=LoginSerializer,
+        operation_description="Login using username and password. Returns access and refresh tokens."
+    )
 
     def post(self, request):
+        """login with username and password as credentials"""
         serializer = LoginSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -52,7 +69,14 @@ class LoginView(APIView):
 class LogoutView(APIView):
     permissions_clases  = [permissions.IsAuthenticated]
 
+    @swagger_auto_schema(
+        request_body=LogoutSerializer,
+        operation_description="Logout by blacklisting the refresh token."
+    )
+
+    
     def post(self, request):
+       
         try:
             refresh_toke = request.data["refresh"]
             token = RefreshToken(refresh_toke)
@@ -67,7 +91,13 @@ class LogoutView(APIView):
 class VerifyOTPAndResetPasswordView(APIView):
     permission_classes = [permissions.AllowAny]
 
+    @swagger_auto_schema(
+        request_body=VerifyOTPAndResetPasswordSerializer,
+        operation_description="Verify OTP and reset the user's password. Requires email, OTP code, and new password."
+    )
+
     def post(self, request):
+        """Verify the otp and reset password by request an otp and submit it to change and password """
         email = request.data.get("email")
         otp_code = request.data.get("otp")
         new_password = request.data.get("new_password")

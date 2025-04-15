@@ -53,3 +53,15 @@ class LoginSerializer(serializers.Serializer):
 
         data["user"] = user
         return data
+    
+# for swagger documenation
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    
+
+# for swagger documenation
+class VerifyOTPAndResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    otp = serializers.CharField()
+    new_password = serializers.CharField()

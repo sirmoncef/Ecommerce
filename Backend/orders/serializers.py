@@ -12,3 +12,8 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ["id", "total_price", "status", "created_at", "items"]
+
+# for swagger documentation
+class PaymentMethodSerializer(serializers.Serializer):
+    order_id = serializers.IntegerField()
+    payment_method = serializers.ChoiceField(choices=["cod", "online"])

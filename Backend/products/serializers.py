@@ -51,9 +51,9 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
-    product_name = serializers.CharField(source="product.name", read_only=True)
+    product = ProductSerializer(read_only=True)  
     attributes = AttributeValueSerializer(many=True, read_only=True)
 
     class Meta:
         model = ProductDetail
-        fields = ["id", "product", "product_name", "attributes", "stock", "is_available"]
+        fields = ["id", "product", "attributes", "stock", "is_available"]

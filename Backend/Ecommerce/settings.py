@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'django_rest_passwordreset',
+    'drf_yasg',
     'users',
     "products",
     "cart",
@@ -170,5 +171,18 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 CHARGILY_KEY = "test_pk_MpbjkiYF8W7fHpRNWcMouCGivanXwpkJ3rXaTtQG"
 CHARGILY_SECRET = "test_sk_KyA10KdlGw3GezcYwe63PFLFpHzQBPqElEatF41k"
 CHARGILY_URL = "https://pay.chargily.net/test/api/v2/"
+
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT Authorization header using the Bearer scheme. Example: "Bearer <token>"',
+        }
+    },
+    'USE_SESSION_AUTH': False,
+}
 
 
